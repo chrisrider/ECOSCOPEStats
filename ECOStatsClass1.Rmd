@@ -1,0 +1,50 @@
+---
+title: "Lesson1"
+author: "Jennifer Bonderoff Lisa McEwen"
+date: "February 6, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r eval=TRUE}
+library(tidyverse)
+library(broom)
+
+```
+
+# 1-way ANOVA with 2 groups
+
+```{r eval=TRUE}
+fruitfly_2_groups <- read_csv("Data/fruitfly_2_groups.csv")
+dim(fruitfly_2_groups)
+head(fruitfly_2_groups)
+summary(fruitfly_2_groups)
+
+# plot raw data points for each group as a transparent grey/black point
+# overlay mean as a red diamond
+ggplot(fruitfly_2_groups, aes(x = sexually_active, y = longevity)) +
+geom_jitter(position = position_jitter(0.15),
+alpha = 0.7) +
+stat_summary(fun.y = mean,
+geom = "point",
+shape = 18,
+size = 4,
+color="red") +
+xlab("Sexually Active") +
+ylab("Longevity (days)")
+
+
+# create an ANOVA "model" object
+fruitfly_2_groups_model <- aov(longevity ~ sexually_active,
+data = fruitfly_2_groups)
+# view output of aov() as a nice dataframe using tidy() from the broom package
+(fruitfly_2_groups_results <- tidy(fruitfly_2_groups_model))
+
+
+
+
+```
+
